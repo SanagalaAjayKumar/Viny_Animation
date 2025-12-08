@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Company Website</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Poppins, sans-serif;
+        }
+
+        body {
+            background: #ffffff;  /* FULL WHITE BACKGROUND */
+            color: #000;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            width: 100%;
+            height: 85px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo img {
+            height: 60px;
+        }
+
+        .nav-links a {
+            margin-left: 30px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #000;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #38bdf8;
+        }
+
+        /* HERO SECTION */
+        #canvas3d {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            margin-top: 85px;
+        }
+
+        .hero-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .hero-text h1 {
+            font-size: 60px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            margin-top: 15px;
+            font-size: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+            <img src="image/logo.png" alt="Logo" />
+        </div>
+
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+
+    <canvas id="canvas3d"></canvas>
+
+    <div class="hero-text">
+        <h1>Welcome to Our Company</h1>
+        
+    </div>
+
+    <!-- THREE JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        const canvas = document.getElementById("canvas3d");
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+    
+        renderer.setClearColor(0x483D8B, 1);
+
+        const geometry = new THREE.IcosahedronGeometry(10, 1);
+        const material = new THREE.MeshStandardMaterial({
+            color: 0x38bdf8,
+            wireframe: true
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        const light = new THREE.PointLight(0xffffff, 1);
+        light.position.set(20, 20, 20);
+        scene.add(light);
+
+        camera.position.z = 35;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            mesh.rotation.x += 0.01;
+            mesh.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener("resize", () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+
+</body>
+</html>
