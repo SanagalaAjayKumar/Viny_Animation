@@ -1,99 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>animation</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Company Website</title>
 
-<style>
-  * {margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif;}
-  body {background: linear-gradient(120deg, #0f2027, #203a43, #2c5364); color:white; overflow-x:hidden;}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Poppins, sans-serif;
+        }
 
-  /* NAVBAR */
-  nav {
-    width:100%; padding:20px 50px;
-    display:flex; justify-content:space-between; align-items:center;
-    position:fixed; top:0; z-index:10;
-    background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
-    border-bottom:1px solid rgba(255,255,255,0.1);
-  }
-  nav img { width:140px; }
-  nav ul { list-style:none; display:flex; gap:35px; }
-  nav ul li a { text-decoration:none; color:white; font-size:18px; transition:0.3s; }
-  nav ul li a:hover { color:#00ffcc; }
+        body {
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-  /* HERO */
-  .hero { height:100vh; display:flex; justify-content:center; align-items:center; text-align:center; position:relative; padding:20px;}
-  .hero h1 { font-size:3.8rem; font-weight:700; background: linear-gradient(90deg,#00ffcc,#00aaff); -webkit-background-clip:text; color:transparent; margin-bottom:12px; }
-  .hero p { font-size:1.25rem; opacity:0.85; }
+        /* NAVBAR */
+        .navbar {
+            width: 100%;
+            height: 85px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #222;
+        }
 
-  /* CANVAS */
-  #bgCanvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:-1; }
+        .logo img {
+            height: 60px;
+        }
 
-  @media(max-width:768px){ .hero h1{ font-size:2.6rem; } nav ul{ gap:18px; } }
-</style>
+        .nav-links a {
+            margin-left: 30px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #38bdf8;
+        }
+
+        /* HERO CANVAS */
+        #canvas3d {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            margin-top: 85px;
+        }
+
+        .hero-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .hero-text h1 {
+            font-size: 60px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            margin-top: 15px;
+            font-size: 20px;
+            color: #cccccc;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 40px;
+            }
+
+            .nav-links a {
+                font-size: 16px;
+                margin-left: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<!-- <nav>
-  <img src="logo.png" alt="Company Logo">
-  <ul>
-    <li><a href="#about">About</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav> -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="image/logo.png" alt="Logo" />
+        </div>
 
-<canvas id="bgCanvas"></canvas>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
 
-<section class="hero">
-  <div>
-    <h1>Futuristic & Dynamic</h1>
-    <p>Floating 3D cubes in a smooth dark gradient environment.</p>
-    <h3>ajay</h3>
-  </div>
-</section>
+    <canvas id="canvas3d"></canvas>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-  const canvas = document.getElementById('bgCanvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
+    <div class="hero-text">
+        <h1>DuurveX Tech</h1>
+        <p>Innovating the future with technology</p>
+    </div>
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,1000);
-  camera.position.z = 7;
+    <!-- THREE JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  const cubeGroup = new THREE.Group();
-  const geometry = new THREE.BoxGeometry(0.7,0.7,0.7);
-  for(let i=0;i<60;i++){
-    const mat = new THREE.MeshStandardMaterial({ color:0x00ffcc, roughness:0.3, metalness:0.4 });
-    const cube = new THREE.Mesh(geometry,mat);
-    cube.position.set((Math.random()-0.5)*12,(Math.random()-0.5)*8,(Math.random()-0.5)*10);
-    cube.rotation.x = Math.random()*Math.PI;
-    cube.rotation.y = Math.random()*Math.PI;
-    cubeGroup.add(cube);
-  }
-  scene.add(cubeGroup);
+    <script>
+        const canvas = document.getElementById("canvas3d");
+        const scene = new THREE.Scene();
 
-  const light = new THREE.PointLight(0xffffff,1.3);
-  light.position.set(4,4,6);
-  scene.add(light);
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
 
-  function animate(){
-    requestAnimationFrame(animate);
-    cubeGroup.rotation.x += 0.0015;
-    cubeGroup.rotation.y += 0.002;
-    renderer.render(scene,camera);
-  }
-  animate();
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: false
+        });
 
-  window.addEventListener('resize',()=>{
-    camera.aspect = window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-</script>
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setClearColor(0x000000, 1); //blcak
+
+        const geometry = new THREE.IcosahedronGeometry(10, 1);
+        const material = new THREE.MeshStandardMaterial({
+            color: 0x38bdf8,
+            wireframe: true
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        const light = new THREE.PointLight(0xffffff, 1);
+        light.position.set(20, 20, 20);
+        scene.add(light);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        camera.position.z = 35;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            mesh.rotation.x += 0.01;
+            mesh.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener("resize", () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
 
 </body>
 </html>
